@@ -15,6 +15,7 @@ public class ObjectModelTest {
         private ShadowMachine shadowMachine;
         private Lighting lighting;
         private SoundBar soundBar;
+        private MonsterModel monsterModel;
 
 
         @BeforeEach
@@ -23,6 +24,7 @@ public class ObjectModelTest {
             this.shadowMachine = new ShadowMachine();
             this.lighting = new Lighting(10);
             this.soundBar = new SoundBar(100);
+            this.monsterModel = new MonsterModel(MonsterType.ELEPHANT);
         }
 
         @Test
@@ -94,6 +96,30 @@ public class ObjectModelTest {
             fogMachine.addGas(90);
             fogMachine.makeFog(40);
             assertEquals(90 - 40, fogMachine.getGasLevel());
+        }
+
+        @Test
+        @DisplayName("Monster make sound")
+        void checkMonsterMakeSound() {
+            monsterModel.makeSound(soundBar, SoundEffect.ELEPHANT, 20);
+            assertEquals(SoundEffect.ELEPHANT, monsterModel.getLastPlayedSound());
+        }
+
+        @Test
+        @DisplayName("Check kill dead monster")
+        void checkKillDeadMonster() {
+            MonsterModel ghost = new MonsterModel(MonsterType.GHOST);
+            ghost.setDead(true);
+            Throwable exception = assertThrows(Exception.class, () -> monsterModel.killMonster(ghost));
+            assertEquals("Нельзя убить мертвого", exception.getMessage());
+        }
+
+        @Test
+        @DisplayName("Check kill dead monster")
+        void checkKillMonsterNormal() {
+            MonsterModel ghost = new MonsterModel(MonsterType.GHOST);
+            monsterModel.killMonster(ghost);
+            assertTrue(ghost.isDead());
         }
 
     }

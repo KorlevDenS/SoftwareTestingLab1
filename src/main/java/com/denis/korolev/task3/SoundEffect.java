@@ -6,5 +6,6 @@ public enum SoundEffect {
     DRAGON,
     DEATH,
     GHOST,
-    VAMPIRE
+    VAMPIRE,
+    ELEPHANT
 }
